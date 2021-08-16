@@ -10,6 +10,12 @@ namespace Persistence
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder){
+
+        
+
+        }
+
         public DbSet<Branch> Branches { get; set; }
     }
 }

@@ -1,16 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using API.Extension;
+using Application.Branches;
+using Application.Core;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence;
 
@@ -29,20 +30,26 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddControllers(opt => 
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            });
-            services.AddDbContext<DataContext>(opt =>
+                opt.Filters.Add(typeof(ValidateModelStateAttribute));
+            })
+            .AddFluentValidation( _config => 
+                {
+                    _config.RegisterValidatorsFromAssemblyContaining<CreateBranch>();
+                }
+            );
+            services.Configure<ApiBehaviorOptions>(options =>
             {
-                opt.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
+            options.SuppressModelStateInvalidFilter = true;
             });
+            services.AddApplicationServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,13 +60,14 @@ namespace API
             // app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
