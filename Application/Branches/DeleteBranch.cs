@@ -26,8 +26,8 @@ namespace Application.Branches
             {
                 var branch = await _dbContext.Branches.FindAsync(request.Id);
 
-                if (branch is null)
-                    return Response<Unit>.MakeResponse(true, "There is no branch with this id: "+ request.Id, 404);
+                //if (branch is null)
+                //    return Response<Unit>.MakeResponse(true, "There is no branch with this id: "+ request.Id, 404);
 
                 _dbContext.Remove(branch);
 

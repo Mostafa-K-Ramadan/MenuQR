@@ -14,8 +14,10 @@ public class ValidateModelStateAttribute : ActionFilterAttribute
                     .SelectMany(v => v.Errors)
                     .Select(v => v.ErrorMessage)
                     .ToList();
+            
+            var errorText = string.Join(",", errors);
 
-            var response = Response<List<string>>.MakeResponse(false, "Validation Error", errors,400);
+            var response = Response<string>.MakeResponse(false, "Validation Error", errorText ,400);
 
             context.Result = new JsonResult(response)
             {
