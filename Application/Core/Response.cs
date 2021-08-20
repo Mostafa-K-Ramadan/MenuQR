@@ -14,10 +14,5 @@ namespace Application.Core
         public static Response<T> MakeResponse(bool isSuccess, string message, short code) => 
                                 new Response<T> {IsSuccess = isSuccess, Code = code, Message = message};
 
-        public override string ToString()
-        {
-            // convert to json format ''COMMING SOON'' 
-            return "Hi";
-        }
     }
 }

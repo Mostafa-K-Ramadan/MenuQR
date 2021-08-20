@@ -1,10 +1,7 @@
 using API.Extension;
 using API.Middleware;
-using Application.Branches;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,21 +20,10 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers(opt => 
-            {
-                opt.Filters.Add(typeof(ValidateModelStateAttribute));
-            })
-            .AddFluentValidation( _config => 
-                {
-                    _config.RegisterValidatorsFromAssemblyContaining<CreateBranch>();
-                }
-            );
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-            options.SuppressModelStateInvalidFilter = true;
-            });
+            // make you code more readalbe 
+            services.AddControllerServices(_config);
             services.AddApplicationServices(_config);
+            services.AddIdentityServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

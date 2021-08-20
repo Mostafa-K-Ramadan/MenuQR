@@ -1,5 +1,6 @@
 using Application.Branches;
 using Application.Core;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,19 +20,23 @@ namespace API.Extension
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            // Database Connection 
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
-
+            // CORS Policy
             services.AddCors(opt => {
                 opt.AddPolicy("CorsPolicy", policy => {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
                 });
             });
+            // System services
             services.AddMediatR(typeof(GetBranches.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
             return services;
         }
     }
 }
+

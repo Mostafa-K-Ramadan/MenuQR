@@ -2,6 +2,7 @@ using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace API.Controllers
 {
@@ -17,6 +18,8 @@ namespace API.Controllers
 
         protected IActionResult HandleResponse<T>(Response<T> response)
         {   
+            //string json = JsonConvert.SerializeObject(response, Formatting.Indented);
+            //string output = JsonConvert.SerializeObject(response);
             return StatusCode(response.Code, response);
         }
     }
