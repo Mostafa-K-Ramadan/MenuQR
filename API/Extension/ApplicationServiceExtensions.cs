@@ -1,3 +1,4 @@
+using API.Service;
 using Application.Branches;
 using Application.Core;
 using FluentValidation.AspNetCore;
@@ -34,6 +35,7 @@ namespace API.Extension
             // System services
             services.AddMediatR(typeof(GetBranches.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<Token>();
 
             return services;
         }

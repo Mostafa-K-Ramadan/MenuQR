@@ -1,8 +1,8 @@
+using System.Threading.Tasks;
 using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace API.Controllers
 {

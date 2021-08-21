@@ -40,6 +40,7 @@ namespace API
             // app.UseHttpsRedirection();
             app.UseRouting();
             //app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
